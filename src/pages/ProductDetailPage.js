@@ -1,13 +1,14 @@
 import React from 'react'
 import Navbar from '../features/navbar/Navbar'
 import ProductList from '../features/product-list/components/ProductList'
+import ProductDetail from '../features/product-list/components/ProductDetails'
 
-const Home = () => {
+const ProductDetailPage = () => {
   return (
     <Navbar>
-        <ProductList></ProductList>
+        <ProductDetail></ProductDetail>
     </Navbar>
   )
 }
 
-export default Home
+export default ProductDetailPage
