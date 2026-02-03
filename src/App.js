@@ -2,11 +2,23 @@ import React from 'react';
 import './App.css';
 import ProductList from './features/product-list/ProductList';
 import Home from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import Signup from './features/auth/components/Signup';
+import SignupPage from './pages/SignupPage';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <div >
-      <Home/>
+      {/* <Home/> */}
+      {/* <LoginPage/> */}
+      
+
+      <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/signup" element={<SignupPage/>} />
+      <Route path="/login" element={<LoginPage/>}/>
+    </Routes>
     </div>
   );
 }
