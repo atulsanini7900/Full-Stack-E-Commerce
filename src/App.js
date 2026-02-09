@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import ProductList from "./features/product-list/components/ProductList";
 import Home from "./pages/Home";
@@ -10,8 +10,18 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Protected from "./features/auth/components/Protected";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoggedInUser } from "./features/auth/authSlice";
+import { fetchItemByUserIdAsync } from "./features/cart/cartSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectLoggedInUser)
+
+  useEffect(()=>{
+      dispatch(fetchItemByUserIdAsync(user?.id))
+  },[dispatch, user])
+
   return (
     <div>
       {/* <Home/> */}

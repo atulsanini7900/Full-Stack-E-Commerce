@@ -27,8 +27,8 @@ export default function ProductDetail() {
   const product = productArr?.[0];
 
   function handleCart(e) {
-e.preventDefault()
-    dispatch(addToCartAsync({ ...product, quantity: 1, user }))
+    e.preventDefault();
+    dispatch(addToCartAsync({ ...product, quantity: 1, user }));
   }
   // 🔥 Fetch product by ID
   useEffect(() => {

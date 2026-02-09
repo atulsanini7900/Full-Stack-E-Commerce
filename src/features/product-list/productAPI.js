@@ -54,10 +54,7 @@ export function fetchProductByFilter(filter = {}, pagination = {}) {
     params.append("_start", start);
     params.append("_limit", pagination._limit);
   }
-
-
   const url = `http://localhost:8000/products?${params.toString()}`;
-  console.log("🌐 API URL:", url);
 
   return new Promise(async (resolve, reject) => {
     try {
