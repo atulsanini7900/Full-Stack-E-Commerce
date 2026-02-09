@@ -1,21 +1,38 @@
 // A mock function to mimic making an async request for data
-export function fetchCount(amount = 1) {
+export function createUser(userData) {
   return new Promise(async (resolve) =>{
-    const response = await fetch("https://api.example.com/data");
-    const result = await response.json()
-    resolve({result})
+    const response = await fetch("http://localhost:8000/users",{
+      method:"POST",
+      body:JSON.stringify(userData),
+      headers:{"content-type":"application/json"}
+    });
+    const data = await response.json()
+    resolve({data})
   }
   );
 }
 
+// features/auth/authAPI.js
 
-// export async function fetchCount(amount = 1) {
-//   try {
-//     const response = await fetch("https://api.example.com/data"); // replace with your actual URL
-//     const result = await response.json();
-//     return { result };
-//   } catch (error) {
-//     console.error("Fetch error:", error);
-//     return { error: "Failed to fetch data" };
-//   }
-// }
+export async function loginUser(loginData) {
+  const response = await fetch(
+    `http://localhost:8000/users?email=${loginData.email}`
+  );
+
+  const users = await response.json();
+
+  // user exist nahi karta
+  if (users.length === 0) {
+    throw new Error("User not found");
+  }
+
+  const user = users[0];
+
+  // password mismatch
+  if (user.password !== loginData.password) {
+    throw new Error("Invalid password");
+  }
+
+  return { data: user };
+}
+

@@ -1,45 +1,106 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchCount } from './productAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  fetchAllProducts,
+  fetchBrands,
+  fetchCategories,
+  fetchProductByFilter,
+  fetchSingleProduct,
+} from "./productAPI";
 
 const initialState = {
-  value: 0,
-  status: 'idle',
+  products: [],
+  categories: [],
+  brands: [],
+  selectedProduct: null,
+  status: "idle",
 };
 
-export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
-  async (amount) => {
-    const response = await fetchCount(amount);
-    // The value we return becomes the `fulfilled` action payload
+export const fetchAllProductsAsync = createAsyncThunk(
+  "product/fetchAll",
+  async () => {
+    const response = await fetchAllProducts();
     return response.data;
-  }
+  },
 );
 
-export const counterSlice = createSlice({
-  name: 'counter',
-  initialState,
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    }
+export const fetchAllCategoryAsync = createAsyncThunk(
+  "product/fetchAllCategory",
+  async () => {
+    const response = await fetchCategories();
+    return response.data;
   },
+);
+
+export const fetchAllBrandsAsync = createAsyncThunk(
+  "product/fetchAllBrands",
+  async () => {
+    const response = await fetchBrands();
+    return response.data;
+  },
+);
+
+export const fetchProductsByFilterAsync = createAsyncThunk(
+  "product/fetchByFilter",
+  async ({ filter, pagination }) => {
+    const response = await fetchProductByFilter(filter, pagination);
+    return response.data;
+  },
+);
+
+export const fetchSingleProductAsync = createAsyncThunk(
+  "product/fetchSingleProduct",
+   async (id) => {
+    const response = await fetchSingleProduct(id);
+    return response.data;
+  },
+);
+
+const productSlice = createSlice({
+  name: "product",
+  initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
-        state.status = 'loading';
+      .addCase(fetchAllProductsAsync.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.value += action.payload;
+      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.products = action.payload;
+      })
+      .addCase(fetchProductsByFilterAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductsByFilterAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.products = action.payload;
+      })
+      .addCase(fetchAllCategoryAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllCategoryAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.categories = action.payload;
+      })
+      .addCase(fetchAllBrandsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAllBrandsAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.brands = action.payload;
+      })
+      .addCase(fetchSingleProductAsync.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchSingleProductAsync.fulfilled, (state, action) => {
+        state.selectedProduct = action.payload;
       });
   },
 });
 
-export const { increment } = counterSlice.actions;
+export const selectAllProducts = (state) => state.product.products;
+export const selectAllCategories = (state) => state.product.categories;
+export const selectAllBrands = (state) => state.product.brands;
+export const selectSelectedProduct = (state) => state.product.selectedProduct;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectCount = (state) => state.counter.value;
-
-export default counterSlice.reducer;
+export default productSlice.reducer;

@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import Protected from "./features/auth/components/Protected";
 
 function App() {
   return (
@@ -17,12 +18,12 @@ function App() {
       {/* <LoginPage/> */}
 
       <Routes>
-        <Route path="/" element={<Home />} />
+       <Route path="/" element={<Protected><Home /></Protected> } />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/product-detail" element={<ProductDetailPage/>}/>
+        <Route path="/cart" element={<Protected><CartPage /></Protected>} />
+        <Route path="/checkout" element={<Protected><CheckoutPage /></Protected>} />
+        <Route path="/product-detail/:id" element={<Protected><ProductDetailPage/></Protected>}/>
 
 
       </Routes>

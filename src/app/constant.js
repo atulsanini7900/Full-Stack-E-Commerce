@@ -1,0 +1,1 @@
+export const SET_LIMIT_PER_PAGE = 10;
