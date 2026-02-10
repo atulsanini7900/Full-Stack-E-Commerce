@@ -28,7 +28,9 @@ export default function ProductDetail() {
 
   function handleCart(e) {
     e.preventDefault();
-    dispatch(addToCartAsync({ ...product, quantity: 1, user }));
+    const newItem ={ ...product, quantity: 1, user }
+    delete newItem['id']
+    dispatch(addToCartAsync(newItem));
   }
   // 🔥 Fetch product by ID
   useEffect(() => {

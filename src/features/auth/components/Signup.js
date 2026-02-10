@@ -26,6 +26,7 @@ export default function Signup() {
       CreateUserAsync({
         email: data.email,
         password: data.password,
+        addresses: [],
       }),
     );
 

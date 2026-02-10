@@ -12,6 +12,20 @@ export function createUser(userData) {
   );
 }
 
+export function updateUser(update) {
+  const {id, ...rest}= update
+  return new Promise(async (resolve) =>{
+    const response = await fetch("http://localhost:8000/users/"+id,{
+      method:"PATCH",
+      body:JSON.stringify(rest),
+      headers:{"content-type":"application/json"}
+    });
+    const data = await response.json();
+    resolve({data})
+  }
+  );
+}
+
 // features/auth/authAPI.js
 
 export async function loginUser(loginData) {

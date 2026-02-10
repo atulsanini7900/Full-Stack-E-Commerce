@@ -4,9 +4,10 @@ import Navbar from '../features/navbar/Navbar'
 
 const CartPage = () => {
   return (
-    <Navbar>
+    // <Navbar>
+    // </Navbar>
     <Cart/>
-    </Navbar>
+
   )
 }
 

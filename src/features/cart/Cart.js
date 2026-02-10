@@ -7,39 +7,44 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import { deleteItemFromCartAsync, selectCartItems, selectCartStatus, updateCartAsync } from "./cartSlice";
-
-
-
+import { Link, Navigate } from "react-router-dom";
+import {
+  deleteItemFromCartAsync,
+  selectCartItems,
+  selectCartStatus,
+  updateCartAsync,
+} from "./cartSlice";
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const items = useSelector(selectCartItems)
+  const items = useSelector(selectCartItems);
   const status = useSelector(selectCartStatus);
   const [open, setOpen] = useState(true);
 
-
- function handleQuantity(e, product) {
-  const newQty = +e.target.value;
-
-  if (newQty === product.quantity) return;
-
+  function handleQuantity(e, product) {
+    const newQty = +e.target.value;
+    if (newQty === product.quantity) return;
+    
   dispatch(updateCartAsync({ ...product, quantity: newQty }));
-}
+  }
 
-const handleDeletIntem= (e,id)=>{
-  e.preventDefault();
-  dispatch(deleteItemFromCartAsync(id))
-}
+  const handleDeletIntem = (e, id) => {
+    e.preventDefault();
+    dispatch(deleteItemFromCartAsync(id));
+  };
 
-  const totalAmount = items.reduce((amount, item)=>item.price*item.quantity+amount,0)
-  const totalItems = items.reduce((total, item)=>item.quantity+total,0)
+  const totalAmount = items.reduce(
+    (amount, item) => item.price * item.quantity + amount,
+    0,
+  ).toFixed(2);
+  const totalItems = items.reduce((total, item) => item.quantity + total, 0);
 
   return (
-    <div>
-      <div className="fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
+    <>
+    {!items.length && <Navigate to="/" replace={true}></Navigate>}
+
+      <div className="min-h-screen overflow-y-auto">
+
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
               <div className="flex items-start justify-between"></div>
@@ -80,7 +85,11 @@ const handleDeletIntem= (e,id)=>{
                                 Qty :
                               </label>
 
-                              <select  onChange={(e)=>handleQuantity(e, product)} value={product.quantity} className="border-2">
+                              <select
+                                onChange={(e) => handleQuantity(e, product)}
+                                value={product.quantity}
+                                className="border-2"
+                              >
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -91,7 +100,7 @@ const handleDeletIntem= (e,id)=>{
 
                             <div className="flex">
                               <button
-                              onClick={e=>handleDeletIntem(e,product.id)}
+                                onClick={(e) => handleDeletIntem(e, product.id)}
                                 type="button"
                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                               >
@@ -144,10 +153,10 @@ const handleDeletIntem= (e,id)=>{
               </div>
             </div>
           </div>
-        </div>
+       
       </div>
-    </div>
+    </>
 
-    // </div>
+
   );
 }
